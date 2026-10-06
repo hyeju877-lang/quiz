@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>문화를 담은 건축물 퀴즈</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f3f7f6;--card:#fff;--ink:#17262b;--sub:#5b6d72;--line:#d3dedc;--teal:#0f766e;--tealbg:#d9efec;--plum:#9b1c63;--ok:#157347;--okbg:#dff3e6;--no:#b3261e;--nobg:#fbe3e0}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101a1c;--card:#182427;--ink:#e6f0ee;--sub:#9fb3b2;--line:#2b3d40;--teal:#4fd1c5;--tealbg:#16393a;--plum:#f08cc0;--ok:#6fd49a;--okbg:#17352a;--no:#ff9b93;--nobg:#3d201e}}
+:root[data-theme="dark"]{--bg:#101a1c;--card:#182427;--ink:#e6f0ee;--sub:#9fb3b2;--line:#2b3d40;--teal:#4fd1c5;--tealbg:#16393a;--plum:#f08cc0;--ok:#6fd49a;--okbg:#17352a;--no:#ff9b93;--nobg:#3d201e}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;line-height:1.7}
+main{max-width:680px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:2rem;line-height:1.25;margin:8px 0 4px;color:var(--teal)}
+.lead{color:var(--sub);margin:0 0 20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.tag{display:inline-block;font-size:.8rem;font-weight:700;color:var(--plum);margin-bottom:6px}
+.bar{height:6px;background:var(--line);border-radius:3px;margin:0 0 16px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--teal);width:0;transition:width .3s}
+.q{font-size:1.1rem;font-weight:700;margin:0 0 14px;word-break:keep-all}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;font:inherit;color:inherit;background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:11px 14px;cursor:pointer;word-break:keep-all}
+.opt:hover:not(:disabled){border-color:var(--teal)}
+.opt:focus-visible,.btn:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.opt.ok{background:var(--okbg);border-color:var(--ok)}
+.opt.no{background:var(--nobg);border-color:var(--no)}
+.fb{margin-top:14px;padding:12px 14px;border-radius:10px;background:var(--tealbg);word-break:keep-all}
+.fb b{display:block;margin-bottom:2px}
+.btn{font:inherit;font-weight:700;background:var(--teal);color:var(--bg);border:0;border-radius:10px;padding:11px 22px;cursor:pointer;margin-top:14px}
+.btn.alt{background:transparent;color:var(--teal);border:1.5px solid var(--teal);margin-left:8px}
+.score{font-size:2.4rem;font-weight:800;color:var(--teal);margin:4px 0}
+.row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)}
+.hide{display:none}
+input,textarea{font:inherit;width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);margin:6px 0}
+details{margin-top:16px}summary{cursor:pointer;font-weight:700;color:var(--teal)}.wq{padding:10px 0;border-bottom:1px solid var(--line);word-break:keep-all}
+</style>
+</head>
+<body>
+<main>
+<h1>문화를 담은 건축물</h1>
+<p class="lead">유현준 『도시는 무엇으로 사는가』 · 독서와 작문 · 고등 2학년 · 12문항</p>
+<div id="app"></div>
+</main>
+<script>
+const Q=[
+{c:"내용 확인",q:"글쓴이가 건축물이 그 나라와 장소의 정체성을 만든다고 본 직접적인 이유는?",o:["건축물이 관광객을 가장 많이 끌어모으기 때문","건축물만큼 많은 사람의 땀과 노력이 들어간 결정체는 없기 때문","건축물이 첨단 기술의 최고 결정체이기 때문","건축물이 다른 나라와 쉽게 비교되기 때문"],a:1,e:"글쓴이는 ‘건축물만큼 많은 사람의 땀과 노력이 들어간 결정체는 없다’고 답합니다. 오늘날에는 휴대 전화 같은 첨단 제품이 있어 건축물을 최첨단의 결정체라고 하기는 어렵다고 덧붙입니다."},
+{c:"내용 확인",q:"글의 내용과 일치하지 않는 것은?",o:["한자는 상대적 위치와 길이를 조합해 글자를 만든다.","알파벳은 글자의 순서를 바꾸어 단어를 만든다.","한자는 가로 한 방향으로, 알파벳은 사방으로 확장된다.","서양 사람들은 기본적인 최소 단위를 추구한다."],a:2,e:"확장 방향이 반대로 서술되었습니다. 한자는 사방으로, 알파벳(영어)은 왼쪽에서 오른쪽의 가로축 한 방향으로 확장됩니다."},
+{c:"내용 확인",q:"글에서 ‘좌우 비대칭’인 동양 건축물의 사례로 든 것은?",o:["판테온, 성 베드로 대성당","베르사유 궁전, 경복궁","경복궁, 도산 서원","피라미드, 도산 서원"],a:2,e:"좌우 대칭의 사례는 판테온·성 베드로 대성당·베르사유 궁전(서양)이고, 좌우 비대칭의 사례는 경복궁·도산 서원(동양)입니다."},
+{c:"내용 확인",q:"글쓴이가 추측한, 개미집과 벌집의 형태가 완전히 다른 이유는?",o:["개미는 여왕이 없고 벌은 여왕이 있어서","개미는 날개가 없어 땅과 연결해 짓고, 벌은 날 수 있어 공중에 짓기 때문에","개미는 기후에 민감하고 벌은 민감하지 않아서","개미는 개체 수가 많고 벌은 적어서"],a:1,e:"‘아마도 ~ 때문일 것이다’라는 추측입니다. 둘 다 여왕 중심의 사회성을 띠므로 여왕의 유무는 차이의 이유가 될 수 없습니다."},
+{c:"설명 방식",q:"‘개미 사회와 벌 사회의 공통점’(집단 서식, 여왕 중심의 계층, 사회성의 결집체로서의 집)을 서술한 설명 방식은?",o:["비교","대조","예시","분류"],a:0,e:"둘 이상의 대상에서 서로 같은 점을 밝히는 방식이 비교입니다. 이후 ‘하지만 건축적으로 확연히 다르다’에서 차이점을 밝히는 대조로 이어집니다."},
+{c:"설명 방식",q:"한자와 알파벳이 글자를 만드는 방식과 확장되는 방향의 차이를 밝힌 설명 방식은?",o:["비교","대조","유추","정의"],a:1,e:"둘 이상의 대상의 차이점을 밝히는 방식이 대조입니다. ‘반면에’, ‘~ 반면’ 같은 표지가 단서가 됩니다."},
+{c:"설명 방식",q:"木(나무 목), 本(근본 본), 末(끝 말), 未(아닐 미)와 END, DEN을 제시한 설명 방식은?",o:["유추","인용","예시","과정"],a:2,e:"‘글자 생성 방식이 다르다’는 일반적 진술을 구체적인 글자와 단어로 보여 주므로 예시입니다."},
+{c:"설명 방식",q:"‘개미집은 동양처럼 관계 중심의 건축, 벌집은 서양처럼 기하학 중심의 건축’이라는 서술에 쓰인 설명 방식은?",o:["대조","유추","분류","비교"],a:1,e:"서로 다른 범주(곤충의 집과 동서양의 건축)에서, 친숙한 대상(곤충의 집)의 특성으로 낯선 대상(동서양 건축 문화)을 설명하므로 유추입니다. 같은 범주끼리 견주는 비교와 구별됩니다."},
+{c:"주제 파악",q:"이 글의 주제로 가장 적절한 것은?",o:["동서양 건축 기술의 발전 과정","각 지역의 문화가 반영된 동서양의 건축물","곤충의 집에서 배우는 현대 건축의 지혜","한자와 알파벳의 역사적 기원"],a:1,e:"건축물이 지역의 문화를 담고 있음을 한자·알파벳과 개미집·벌집에 빗대어 동서양 건축으로 설명한 글입니다."},
+{c:"주제 파악",q:"‘가운데 2’(개미집과 벌집)가 글 전체에서 하는 역할은?",o:["앞에서 제시한 주장을 반박한다.","동서양 건축의 차이를 곤충의 집에 빗대어 쉽게 이해시킨다.","새로운 화제로 전환해 논의를 넓힌다.","건축 기술의 한계를 지적한다."],a:1,e:"가운데 1의 한자·알파벳과 마찬가지로 가운데 2도 동서양 건축 문화의 차이를 설명하는 장치입니다. ‘끝’에서 이를 동서양 문화와 연결해 마무리합니다."},
+{c:"주제 파악",q:"글쓴이가 설명한 동서양 건축의 문화적 배경을 바르게 짝지은 것은?",o:["동양: 이데아 중시 / 서양: 유교 중시","동양: 충·효 같은 관계를 중시하는 유교 / 서양: 눈에 보이지 않는 위로부터 오는 원칙(이데아) 중시","동양: 기하학 중시 / 서양: 관계성 중시","동양: 땅과 무관한 문화 / 서양: 땅과 연결된 문화"],a:1,e:"동양은 유교의 관계성이 땅과 연결된 개미집 같은 건축으로, 서양은 이데아의 원칙이 공중의 벌집 같은 기하학적 건축으로 이어졌다고 봅니다."},
+{c:"주제 파악",q:"다음 <보기>를 이 글의 관점에서 감상한 것으로 가장 적절한 것은?\n<보기> 몽골의 전통 가옥 게르는 쉽게 분해하고 조립할 수 있어 유목 생활을 하는 몽골인들에게 적합하다.",o:["게르는 규모가 작아 건축물로 보기 어렵다.","게르는 그 지역 사람들의 생활 방식과 문화가 반영된 건축물이다.","게르는 상징적 건축물이 아니므로 문화와 관련이 적다.","게르의 구조는 기술력과 재력을 과시하기 위한 것이다."],a:1,e:"글쓴이는 상징적 건축물뿐 아니라 일반적인 건축물도 그 지역의 지리·기후적 특색과 문화를 보여 준다고 말합니다. ‘상징적 건축물이 아니므로 문화와 관련이 적다’는 이 관점과 반대입니다."}
+];
+const app=document.getElementById("app");
+let i=0,sc=[],wrong=[],set=[],ord=[],who="";
+const esc=s=>s.replace(/</g,"&lt;").replace(/\n/g,"<br>");
+const shuf=a=>{a=a.slice();for(let k=a.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[a[k],a[j]]=[a[j],a[k]]}return a};
+const all=()=>Q.map((_,k)=>k);
+function start(list,sh){set=sh?shuf(list):list;i=0;sc=[];wrong=[];show()}
+function intro(){app.innerHTML='<div class="card"><span class="tag">내용 확인 · 설명 방식 · 주제 파악</span><p class="q">교과서 본문을 읽고 12문항을 풀어 보세요.</p><p class="lead">문항마다 정답과 해설이 바로 나옵니다. 문항 순서와 선지 순서는 매번 섞입니다. 설명 방식은 본문의 표지어를 근거로 판단해 보세요.</p><label for="nm">학번과 이름</label><input id="nm" maxlength="20" placeholder="예: 20101 김하늘" autocomplete="off"><button class="btn" id="go">시작하기</button></div>';
+document.getElementById("go").onclick=()=>{who=document.getElementById("nm").value.trim()||"이름 미입력";start(all(),true)}}
+function show(){const n=set[i],d=Q[n];ord=shuf(d.o.map((_,k)=>k));
+app.innerHTML='<div class="bar"><i style="width:'+(i/set.length*100)+'%"></i></div><div class="card"><span class="tag">'+d.c+' · '+(i+1)+'/'+set.length+'</span><p class="q">'+esc(d.q)+'</p><div class="opts">'+ord.map((k,p)=>'<button class="opt" data-k="'+k+'">'+(p+1)+'. '+d.o[k]+'</button>').join("")+'</div><div id="fb"></div></div>';
+app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>pick(+b.dataset.k))}
+function pick(k){const n=set[i],d=Q[n],right=k===d.a;
+sc.push({n,right});if(!right)wrong.push(n);
+app.querySelectorAll(".opt").forEach(b=>{b.disabled=true;const v=+b.dataset.k;if(v===d.a)b.classList.add("ok");else if(v===k)b.classList.add("no")});
+document.getElementById("fb").innerHTML='<div class="fb"><b>'+(right?"정답입니다.":"오답입니다. 정답은 "+(ord.indexOf(d.a)+1)+"번입니다.")+'</b>'+d.e+'</div><button class="btn" id="nx">'+(i<set.length-1?"다음 문항":"결과 보기")+'</button>';
+const nx=document.getElementById("nx");nx.focus();nx.onclick=()=>{i++;i<set.length?show():result()}}
+function result(){const ok=sc.filter(s=>s.right).length,cats={};
+sc.forEach(s=>{const c=Q[s.n].c;cats[c]=cats[c]||[0,0];cats[c][1]++;if(s.right)cats[c][0]++});
+const txt=who+" | "+ok+"/"+sc.length+" | "+Object.keys(cats).map(c=>c+" "+cats[c][0]+"/"+cats[c][1]).join(", ")+" | 오답 문항: "+(wrong.length?wrong.map(n=>n+1).sort((a,b)=>a-b).join(", ")+"번":"없음");
+app.innerHTML='<div class="card"><span class="tag">'+esc(who)+' 학생의 결과</span><div class="score">'+ok+' / '+sc.length+'</div>'+Object.keys(cats).map(c=>'<div class="row"><span>'+c+'</span><b>'+cats[c][0]+' / '+cats[c][1]+'</b></div>').join("")+
+(wrong.length?'<details open><summary>오답 노트</summary>'+wrong.map(n=>'<div class="wq"><b>'+(n+1)+'번.</b> '+esc(Q[n].q)+'<br>정답: '+Q[n].o[Q[n].a]+'<br><span style="color:var(--sub)">'+Q[n].e+'</span></div>').join("")+'</details>':'')+
+'<p class="lead" style="margin-top:16px">선생님께 제출할 결과입니다.</p><textarea id="rt" rows="3" readonly>'+txt+'</textarea><div><button class="btn" id="cp">결과 복사</button>'+(wrong.length?'<button class="btn alt" id="rw">틀린 문항 다시 풀기</button>':'')+'<button class="btn alt" id="rs">처음부터</button></div><p id="cm" class="lead"></p></div>';
+document.getElementById("cp").onclick=async()=>{const t=document.getElementById("rt");t.select();let m="복사했습니다.";try{await navigator.clipboard.writeText(t.value)}catch(e){m="자동 복사가 되지 않았습니다. 위 글자를 직접 복사해 주세요."}document.getElementById("cm").textContent=m};
+if(wrong.length)document.getElementById("rw").onclick=()=>start(wrong.slice(),true);
+document.getElementById("rs").onclick=()=>start(all(),true)}
+intro();
+</script>
+</body>
+</html>
